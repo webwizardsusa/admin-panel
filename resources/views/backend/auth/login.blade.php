@@ -16,4 +16,9 @@
         </div>
         <button type="submit" class="btn btn-primary w-100 py-8 mb-4 rounded-2">Sign In</button>
     {{ html()->form()->close() }}
+    <div class="col-12">
+        <h4>Admin Credentials</h4>
+        <p class="mb-1">Email: admin@admin.com</p>
+        <p>Password: 123456</p>
+    </div>
 @endsection

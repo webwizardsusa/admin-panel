@@ -2,6 +2,7 @@
     $user = auth()->user();
     $name = $user->name;
     $email = $user->email;
+    $image = $user->image;
 @endphp
 
 <!DOCTYPE html>
@@ -79,7 +80,11 @@
                                     <a class="nav-link pe-0" href="javascript:void(0)" id="drop1" aria-expanded="false">
                                         <div class="d-flex align-items-center">
                                             <div class="user-profile-img">
-                                                <img src="{{ url('assets/backend/images/profile/user-1.jpg') }}" class="rounded-circle" width="35" height="35" alt="modernize-img" />
+                                                @if ($image != '')
+                                                    <img src="{{ url('storage/profile/'.$image) }}" class="rounded-circle" width="35" height="35" alt="profile" />
+                                                @else
+                                                    <img src="{{ url('assets/backend/images/profile/user-1.jpg') }}" class="rounded-circle" width="35" height="35" alt="profile" />
+                                                @endif
                                             </div>
                                         </div>
                                     </a>
@@ -89,7 +94,11 @@
                                                 <h5 class="mb-0 fs-5 fw-semibold">User Profile</h5>
                                             </div>
                                             <div class="d-flex align-items-center py-9 mx-7 border-bottom">
-                                                <img src="{{ url('assets/backend/images/profile/user-1.jpg') }}" class="rounded-circle" width="80" height="80" alt="modernize-img" />
+                                                @if ($image != '')
+                                                    <img src="{{ url('storage/profile/'.$image) }}" class="rounded-circle" width="80" height="80" alt="profile" />
+                                                @else
+                                                    <img src="{{ url('assets/backend/images/profile/user-1.jpg') }}" class="rounded-circle" width="80" height="80" alt="profile" />
+                                                @endif
                                                 <div class="ms-3">
                                                     <h5 class="mb-1 fs-3">{{ $name }}</h5>
                                                     <p class="mb-0 d-flex align-items-center gap-2">
