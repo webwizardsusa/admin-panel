@@ -16,8 +16,8 @@ function dateFormat($type, $value)
 {
     if ($type == 1) return Carbon::parse($value)->format('Y-m-d');
     else if ($type == 2) return Carbon::parse($value)->format('Y-m-d H:i:s');
-    else if ($type == 3) return Carbon::parse($value)->format('m-d-Y');
-    else if ($type == 4) return Carbon::parse($value)->format('m-d-Y H:i:s');
+    else if ($type == 3) return Carbon::parse($value)->format('m/d/Y');
+    else if ($type == 4) return Carbon::parse($value)->format('m/d/Y H:i:s');
 }
 
 function lists($type) 
