@@ -13,7 +13,7 @@
         </div>
 
         <div class="upload-box upload-box-{{ $class }}" style="display: none;">
-            <img style="width: 100%;">
+            <img style="width: 120px;height: 120px;">
             <div class="upload-actions">
                 <i class="ti ti-pencil edit-{{$class}}"></i>
                 <i class="ti ti-trash delete-{{$class}}"></i>
@@ -29,12 +29,11 @@
     @once
         <script>
             var selector = '{{ $class }}';
-            var file = '{{ $file }}';
-            var path = '{{ $path }}';
+            var file = '{{ $file != '' && fileExists($path."/".$file) ? $path."/".$file : '' }}';
 
             $(function() {
                 if (file != '') {
-                    boxEvent1(1, path+'/'+file)
+                    boxEvent1(1, file)
                 }
             })
 
@@ -50,11 +49,11 @@
                 boxEvent1(2)
             })
 
-            function previewFile(){
+            function previewFile() {
                 var fileInput = $(`.file-${selector}`).get(0);
     
                 if (fileInput.files && fileInput.files[0]) {
-                    var file = fileInput.files[0];
+                    var selectedFile = fileInput.files[0];
                     var reader = new FileReader();
 
                     reader.onload = function(e) {
@@ -63,11 +62,11 @@
                         boxEvent1(1, result)    
                     }
 
-                    reader.readAsDataURL(file);
+                    reader.readAsDataURL(selectedFile);
                 }
             }
 
-            function boxEvent1(type, result = ''){
+            function boxEvent1(type, result = '') {
                 var previewBox = $(`.preview-box-${selector}`);
                 var uploadBox = $(`.upload-box-${selector}`);
 
@@ -145,4 +144,3 @@
         </style>
     @endonce
 @endpush
-

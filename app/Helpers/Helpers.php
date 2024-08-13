@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 
 function baseURL($param = '') 
@@ -15,8 +16,8 @@ function dateFormat($type, $value)
 {
     if ($type == 1) return Carbon::parse($value)->format('Y-m-d');
     else if ($type == 2) return Carbon::parse($value)->format('Y-m-d H:i:s');
-    else if ($type == 3) return Carbon::parse($value)->format('d-m-Y');
-    else if ($type == 4) return Carbon::parse($value)->format('d-m-Y H:i:s');
+    else if ($type == 3) return Carbon::parse($value)->format('m-d-Y');
+    else if ($type == 4) return Carbon::parse($value)->format('m-d-Y H:i:s');
 }
 
 function lists($type) 
@@ -26,11 +27,6 @@ function lists($type)
             'male' => 'Male',
             'female' => 'Female',
             'other' => 'Other'
-        ];
-    } else if ($type == 'status') {
-        return [
-            'active' => 'Active',
-            'inactive' => 'Inactive'
         ];
     }
 }
@@ -52,4 +48,17 @@ function switches($value, $type, $subtype = '')
             return $value == 1 ? 'active' : 'inactive';
         }
     }
+}
+
+function fileExists($file) 
+{
+    if ($file != '') {
+        $file = str_replace(url('/storage'), '', $file);
+        
+        if (Storage::disk('public')->exists($file)) {
+            return true;
+        } 
+    }
+    
+    return false;
 }

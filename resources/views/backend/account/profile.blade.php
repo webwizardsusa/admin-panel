@@ -57,6 +57,7 @@
                     <div class="col-md-12">
                         <label class="form-label">Image</label>
                         <x-backend::form.file name="image" class="image" file="{{ $image }}" path="{{ url('storage/profile') }}"/>
+                        <p class="tagline">(Image Size - 490 x 490)</p>
                     </div>
                     <div class="col-12">
                         <button type="submit" class="btn btn-primary">Update</button>

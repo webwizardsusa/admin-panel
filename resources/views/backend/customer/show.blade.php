@@ -7,7 +7,7 @@
         $mobile = $record['mobile'];
         $dob = $record['dob'] ? dateFormat(3, $record['dob']) : '';
         $gender = lists('gender')[$record['gender']] ?? '';
-        $status = lists('status')[$record['status']] ?? '';
+        $status = switches($record['status'], 1) ?? '';
     @endphp
 
     <x-backend::ui.breadcrumb 
@@ -45,7 +45,7 @@
                 </div>
                 <div class="col-md-12">
                     <label>Status</label>
-                    <p>{{ $status }}</p>
+                    <p>{!! $status !!}</p>
                 </div>
             </div>
         </div>
