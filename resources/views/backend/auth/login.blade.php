@@ -1,6 +1,4 @@
-@extends('backend.layouts.blank')
-
-@section('content')
+<x-backend.layouts.blank>
     <p class="mb-7">Please sign in to access the dashboard.</p>
     <x-backend::ui.alerts />
     {{ html()->form('post', baseURL())->open() }}
@@ -21,4 +19,4 @@
         <p class="mb-1">Email: admin@admin.com</p>
         <p>Password: 123456</p>
     </div>
-@endsection
+</x-backend.layouts.blank>

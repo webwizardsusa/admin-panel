@@ -1,6 +1,4 @@
-@extends('backend.layouts.full')
-
-@section('content')
+<x-backend.layouts.full>
     @php
         $name = old('name') ?? $record['name'];
         $email = old('email') ?? $record['email'];
@@ -66,4 +64,4 @@
             {{ html()->form()->close() }}
         </div>
     </div>
-@endsection
+</x-backend.layouts.full>

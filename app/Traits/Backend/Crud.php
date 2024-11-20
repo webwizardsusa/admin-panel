@@ -5,6 +5,7 @@ namespace App\Traits\Backend;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 trait Crud
 {
@@ -13,20 +14,30 @@ trait Crud
         $this->title = ucfirst($this->module);
         $this->dt = ucfirst($this->module);
         $this->view = $this->view ?? $this->module;
+        $this->message = $this->message ?? $this->title;
         $this->redirect = $this->redirect ?? $this->module;
+        $this->isDataTable = $this->isDataTable ?? true;
     }
 
     public function index()
     {
-        $dt = "\\App\DataTables\\Backend\\{$this->dt}DataTable";
-        $dataTable = new $dt;
+        if ($this->isDataTable) {
+            $dt = "\\App\DataTables\\Backend\\{$this->dt}DataTable";
+            $dataTable = new $dt;
 
-        return $dataTable->render("backend.{$this->view}.list");
+            return $dataTable->render("backend.{$this->view}.list");
+        } else {
+            $shareData = $this->_shareData('list');
+
+            return view("backend.{$this->view}.list", $shareData);
+        }
     }
 
     public function create()
     {
-        return view("backend.{$this->view}.create", $this->_shareData());
+        $shareData = $this->_shareData('create');
+
+        return view("backend.{$this->view}.create", $shareData);
     }
 
     public function store(Request $request)
@@ -42,7 +53,9 @@ trait Crud
             return $record;
         }
 
-        return view("backend.{$this->view}.show", compact('record')+$this->_shareData());
+        $shareData = $this->_shareData('show', $id);
+
+        return view("backend.{$this->view}.show", compact('record')+$shareData);
     }
 
     public function edit(string $id)
@@ -53,7 +66,9 @@ trait Crud
             return $record;
         }
 
-        return view("backend.{$this->view}.edit", compact('id', 'record')+$this->_shareData());
+        $shareData = $this->_shareData('edit', $id);
+
+        return view("backend.{$this->view}.edit", compact('id', 'record')+$shareData);
     }
 
     public function update(Request $request, string $id)
@@ -63,6 +78,8 @@ trait Crud
 
     public function destroy(string $id)
     {
+        DB::beginTransaction(); 
+        
         $record = $this->_select($id);
 
         if ($record instanceof \Illuminate\Http\RedirectResponse) {
@@ -72,13 +89,29 @@ trait Crud
         $result = $record->delete();
 
         if ($result) {
-            return redirect(baseURL($this->redirect))->with("success", "{$this->title} deleted successfully.");
+            DB::commit();
+            
+            $message = "{$this->message} deleted successfully";
+            
+            if (request()->ajax()) {
+                return response()->json(ajaxResponse(true, $message, []));
+            }
+
+            return redirect(baseURL($this->redirect))->with("success",$message);
         }else{
-            return redirect(baseURL($this->redirect))->with("danger", "Something went wrong.");
+            DB::rollBack();
+
+            $message = "Something went wrong.";
+
+            if (request()->ajax()) {
+                return response()->json(ajaxResponse(false, $message, []));
+            }
+
+            return redirect(baseURL($this->redirect))->with("danger", $message);
         }
     }
 
-    protected function _shareData()
+    protected function _shareData($page = '')
     {
         return [];
     }
@@ -96,7 +129,7 @@ trait Crud
         if ($record) {
             return $record;
         } else {
-            return redirect(baseURL($this->redirect))->with("danger", "{$this->title} not found.");
+            return redirect(baseURL($this->redirect))->with("danger", "{$this->message} not found.");
         }
     }
 
@@ -107,6 +140,8 @@ trait Crud
         if ($validate) {
             return $validate;
         }
+
+        DB::beginTransaction(); 
 
         $requestData = $request->all();
 
@@ -127,13 +162,35 @@ trait Crud
         }
 
         if ($result) {
+            DB::commit();
+
             if ($id == '') {
-                return redirect(baseURL($this->redirect))->with("success", "{$this->title} created successfully.");
+                $message = "{$this->message} created successfully.";
+                
+                if ($request->ajax()) {
+                    return response()->json(ajaxResponse(true, $message, []));
+                }
+
+                return redirect(baseURL($this->redirect))->with("success", $message);
             } else {
-                return redirect(baseURL($this->redirect))->with("success", "{$this->title} updated successfully.");
+                $message = "{$this->message} updated successfully.";
+                
+                if ($request->ajax()) {
+                    return response()->json(ajaxResponse(true, $message, []));
+                }
+
+                return redirect(baseURL($this->redirect))->with("success", $message);
             }
         }else{
-            return redirect(baseURL($this->redirect))->with("danger", "Something went wrong.");
+            DB::rollBack();
+
+            $message = "Something went wrong";
+
+            if ($request->ajax()) {
+                return response()->json(ajaxResponse(false, $message, []));
+            }
+
+            return redirect(baseURL($this->redirect))->with("danger", $message);
         }
     }
 
@@ -153,6 +210,10 @@ trait Crud
         $validator = Validator::make(request()->all(), $rules, $messages);
  
         if ($validator->fails()) {
+            if (request()->ajax()) {
+                return response()->json(ajaxResponse(false, "Something went wrong", $validator->errors()), 422);
+            }
+
             return redirect()->back()->withErrors($validator)->withInput();
         }
 

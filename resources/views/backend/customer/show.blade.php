@@ -1,6 +1,4 @@
-@extends('backend.layouts.full')
-
-@section('content')
+<x-backend.layouts.full>
     @php
         $name = $record['name'];
         $email = $record['email'];
@@ -50,5 +48,5 @@
             </div>
         </div>
     </div>
-@endsection
+</x-backend.layouts.full>
 

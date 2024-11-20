@@ -1,6 +1,4 @@
-@extends('backend.layouts.full')
-
-@section('content')
+<x-backend.layouts.full>
     <x-backend::ui.breadcrumb 
         title="Edit Customer"
         :crumbs="[
@@ -18,4 +16,4 @@
             {{ html()->form()->close() }}
         </div>
     </div>
-@endsection
+</x-backend.layouts.full>

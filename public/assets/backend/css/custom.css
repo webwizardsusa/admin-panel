@@ -53,3 +53,11 @@ div.dataTables_wrapper div.dataTables_paginate{
     color: red;
     margin: 2px 0;
 }
+
+body{
+    background: #F3F5F7;
+}
+
+.topbar{
+    background: #5E86F7;
+}

@@ -29,7 +29,7 @@
                             <div class="authentication-login min-vh-100 bg-body row justify-content-center align-items-center p-4">
                                 <div class="auth-max-width col-sm-8 col-md-6 col-xl-7 px-4">
                                     <h2 class="mb-1 fs-7 fw-bolder">Welcome to WWU</h2>
-                                    @yield('content')
+                                    {{ $slot }}
                                 </div>
                             </div>
                         </div>
