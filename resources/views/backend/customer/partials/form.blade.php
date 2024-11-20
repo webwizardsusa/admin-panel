@@ -47,7 +47,7 @@
     </div>
     <div class="col-md-6">
         <label for="status" class="form-label">Status</label>
-        <x-backend::form.switch name="status" checked="{{ switches($status, 2, 1) }}"/>
+        <x-backend::form.switch name="status" checked="{{ $status }}"/>
         <x-backend::form.error name="status" :errors="$errors"/>
     </div>
     <div class="col-12">
