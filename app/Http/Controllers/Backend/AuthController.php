@@ -19,7 +19,7 @@ class AuthController extends Controller
             $credentials['role'] = 'admin';
 
             if (Auth::attempt($credentials)) {
-                if (Auth::user()->status == 'active') {
+                if (Auth::user()->status == '1') {
                     $request->session()->regenerate();
      
                     return redirect()->intended(baseURL('customer'));
