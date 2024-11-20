@@ -57,7 +57,7 @@ Create a virtual host for the project
 ![login](public/readme/login.png)
 
 ## Customer List
-![list](public/readme/customerlist.png)
+![list](public/readme/listcustomer.png)
 
 ## Create Customer
 ![create](public/readme/createcustomer.png)
