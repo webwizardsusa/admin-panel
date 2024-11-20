@@ -27,7 +27,11 @@ trait Crud
 
             return $dataTable->render("backend.{$this->view}.list");
         } else {
-            $shareData = $this->_shareData('list');
+            if (method_exists($this, '_shareData')) {
+                $shareData = $this->_shareData('list');
+            } else {
+                $shareData = [];
+            }
 
             return view("backend.{$this->view}.list", $shareData);
         }
@@ -35,7 +39,11 @@ trait Crud
 
     public function create()
     {
-        $shareData = $this->_shareData('create');
+        if (method_exists($this, '_shareData')) {
+            $shareData = $this->_shareData('create');
+        } else {
+            $shareData = [];
+        }
 
         return view("backend.{$this->view}.create", $shareData);
     }
@@ -53,7 +61,11 @@ trait Crud
             return $record;
         }
 
-        $shareData = $this->_shareData('show', $id);
+        if (method_exists($this, '_shareData')) {
+            $shareData = $this->_shareData('show', $id);
+        } else {
+            $shareData = [];
+        }
 
         return view("backend.{$this->view}.show", compact('record')+$shareData);
     }
@@ -66,7 +78,11 @@ trait Crud
             return $record;
         }
 
-        $shareData = $this->_shareData('edit', $id);
+        if (method_exists($this, '_shareData')) {
+            $shareData = $this->_shareData('edit', $id);
+        } else {
+            $shareData = [];
+        }
 
         return view("backend.{$this->view}.edit", compact('id', 'record')+$shareData);
     }
@@ -109,11 +125,6 @@ trait Crud
 
             return redirect(baseURL($this->redirect))->with("danger", $message);
         }
-    }
-
-    protected function _shareData($page = '')
-    {
-        return [];
     }
 
     protected function _select($id)

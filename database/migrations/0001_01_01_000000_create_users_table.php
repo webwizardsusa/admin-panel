@@ -19,12 +19,13 @@ return new class extends Migration
             $table->string('password');
             $table->string('mobile')->nullable();
             $table->date('dob')->nullable();
-            $table->enum('gender', ['male', 'female', 'other'])->nullable();
+            $table->tinyInteger('gender')->nullable();
             $table->string('image')->nullable();
             $table->enum('role', ['admin', 'customer']);
-            $table->enum('status', ['active', 'inactive']);
+            $table->tinyInteger('status');
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

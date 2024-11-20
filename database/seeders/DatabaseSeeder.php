@@ -20,8 +20,9 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Admin',
                 'email' => 'admin@admin.com',
                 'password' => '123456',
+                'gender' => '1',
                 'role' => 'admin',
-                'status' => 'active'
+                'status' => '1'
             ]);
         }
     }

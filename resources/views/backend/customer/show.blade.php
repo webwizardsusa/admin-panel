@@ -4,8 +4,8 @@
         $email = $record['email'];
         $mobile = $record['mobile'];
         $dob = $record['dob'] ? dateFormat(3, $record['dob']) : '';
-        $gender = lists('gender')[$record['gender']] ?? '';
-        $status = switches($record['status'], 1) ?? '';
+        $gender = $gender_list[$record['gender']] ?? '';
+        $status = badges('status', $record['status']);
     @endphp
 
     <x-backend::ui.breadcrumb 

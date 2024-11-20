@@ -1,10 +1,10 @@
 <x-backend.layouts.full>
     @php
-        $name = old('name') ?? $record['name'];
-        $email = old('email') ?? $record['email'];
-        $mobile = old('mobile') ?? $record['mobile'];
-        $dob = old('dob') ? dateFormat(3, old('dob')) : dateFormat(3, $record['dob']);
-        $gender = old('gender') ?? $record['gender'];
+        $name = $record['name'] ?? old('name');
+        $email = $record['email'] ?? old('email');
+        $mobile = $record['mobile'] ?? old('mobile');
+        $dob =  $record['dob'] ? dateFormat(3, $record['dob']) : old('dob');
+        $gender = $record['gender'] ?? old('gender');
         $image = $record['image'];
     @endphp
 
@@ -17,7 +17,7 @@
     <x-backend::ui.alerts />
     <div class="card">
         <div class="card-body">
-            {{ html()->form('put', baseURL('profile'))->id('uploadForm')->acceptsFiles()->open() }}
+            {{ html()->form('put', baseURL('profile'))->acceptsFiles()->open() }}
                 <div class="row g-3">
                     <div class="col-md-12">
                         <label for="name" class="form-label">Name</label>
@@ -48,7 +48,7 @@
                         <x-backend::form.select 
                             name="gender" 
                             value="{{ $gender }}"
-                            :options="lists('gender')"
+                            :options="$gender_list"
                         />
                         <x-backend::form.error name="gender" :errors="$errors"/>
                     </div>

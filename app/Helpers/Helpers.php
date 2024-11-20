@@ -20,34 +20,19 @@ function dateFormat($type, $value)
     else if ($type == 4) return Carbon::parse($value)->format('m/d/Y H:i:s');
 }
 
-function lists($type) 
+function badges($type, $value) 
 {
-    if ($type == 'gender') {
-        return [
-            'male' => 'Male',
-            'female' => 'Female',
-            'other' => 'Other'
-        ];
-    }
-}
+    if ($type == 'status') {
+        $badgeClass = 'primary';
+        $badgeValue = 'Active';
 
-function switches($value, $type, $subtype = '') 
-{
-    if ($type == 1) {
-        $badge = 'primary';
-
-        if (in_array($value, ['inactive'])) {
-            $badge = 'danger';
+        if ($value == 0) {
+            $badgeClass = 'danger';
+            $badgeValue = 'InActive';
         }
+    } 
         
-        return "<span class='fs-2 badge text-bg-{$badge}'>".ucfirst($value)."</span>";
-    } else if ($type == 2) {
-        if ($subtype == 1) {
-            return $value == 'active' || $value == 1 ? true : false;
-        }else if ($subtype == 2) {
-            return $value == 1 ? 'active' : 'inactive';
-        }
-    }
+    return "<span class='fs-2 badge text-bg-{$badgeClass}'>".ucfirst($badgeValue)."</span>";
 }
 
 function fileExists($file) 

@@ -23,6 +23,9 @@
         <label for="password" class="form-label">Password</label>
         <x-backend::form.input type="password" name="password" placeholder="Enter Password" value=""/>
         <x-backend::form.error name="password" :errors="$errors"/>
+        @if (isset($id))
+            <p class="tagline">Leave blank to keep the current password unchanged.</p>
+        @endif
     </div>
     <div class="col-md-6">
         <label for="mobile" class="form-label">Mobile Number</label>
@@ -38,7 +41,7 @@
         <x-backend::form.select 
             name="gender" 
             value="{{ $gender }}"
-            :options="lists('gender')"
+            :options="$gender_list"
         />
         <x-backend::form.error name="gender" :errors="$errors"/>
     </div>

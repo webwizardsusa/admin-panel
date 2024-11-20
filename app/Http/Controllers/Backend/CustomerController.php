@@ -15,6 +15,13 @@ class CustomerController extends BaseController
     {
         return $query->where('role', 'customer');
     }
+
+    public function _shareData($page)
+    {
+        if ($page == 'create' || $page == 'edit'  || $page == 'show'){
+            return ['gender_list' => ['' => 'Select Gender']+User::$gender];
+        }
+    }
     
     public function _validation($id) 
     {
@@ -23,7 +30,7 @@ class CustomerController extends BaseController
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email'.($id == '' ? '' : ','.$id),
                 'password' => $id=='' ? 'required' : '',
-                'mobile' => 'numeric'
+                'mobile' => 'required|numeric'
             ]
         ];
     }
@@ -35,7 +42,7 @@ class CustomerController extends BaseController
         }
 
         $request['role'] = 'customer';
-        $request['status'] = switches(($request['status'] ?? 0), 2, 2);
+        $request['status'] = $request['status'] ?? 0;
 
         return $request;
     }

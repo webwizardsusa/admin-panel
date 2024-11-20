@@ -11,6 +11,8 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    public static $gender = ['1' => 'Male', '2' => 'Female', '3' => 'Other'];
+
     /**
      * The attributes that are mass assignable.
      *

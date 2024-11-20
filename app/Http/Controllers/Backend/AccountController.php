@@ -16,12 +16,19 @@ class AccountController extends BaseController
     {
         $id = auth()->user()->id;
 
+        $record = $this->_select($id);
+
+        if ($record instanceof \Illuminate\Http\RedirectResponse) {
+            return $record;
+        }
+        
         if ($request->isMethod('put')) {
             return $this->_action($request, $id);
         }
 
-        $record = $this->_select($id);
-        return view('backend.account.profile', compact('record'));
+        $gender_list = ['' => 'Select Gender']+User::$gender;
+
+        return view('backend.account.profile', compact('record', 'gender_list'));
     }
 
     public function _validation($id) 
@@ -31,7 +38,7 @@ class AccountController extends BaseController
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email'.($id == '' ? '' : ','.$id),
                 'password' => $id=='' ? 'required' : '',
-                'mobile' => 'numeric'
+                'mobile' => 'required|numeric'
             ]
         ];
     }

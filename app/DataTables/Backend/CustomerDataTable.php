@@ -26,7 +26,7 @@ class CustomerDataTable extends BaseDataTable
                     return dateFormat(3, $data->created_at);
                 })
                 ->editColumn('status', function($data) {
-                    return switches($data->status, 1);
+                    return badges('status', $data->status);
                 })
                 ->rawColumns(['status', 'action']);
     }
