@@ -66,4 +66,4 @@ Create a virtual host for the project
 ![edit](public/readme/editcustomer.png)
 
 ## Profile
-![profile](public/readme/06profile.png)
+![profile](public/readme/profile.png)
