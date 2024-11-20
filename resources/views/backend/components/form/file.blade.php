@@ -2,7 +2,8 @@
     'name' => '',
     'class' => '',
     'file' => '',
-    'path' => ''
+    'path' => '',
+    'ext' => ['jpg', 'jpeg', 'png']
 ])
 
 <div>
@@ -30,6 +31,7 @@
         <script>
             var selector = '{{ $class }}';
             var file = '{{ $file != '' && fileExists($path."/".$file) ? $path."/".$file : '' }}';
+            var acceptedExtensions = @json($ext);
 
             $(function() {
                 if (file != '') {
@@ -53,7 +55,16 @@
                 var fileInput = $(`.file-${selector}`).get(0);
     
                 if (fileInput.files && fileInput.files[0]) {
-                    var selectedFile = fileInput.files[0];
+                    var file = fileInput.files[0];
+                    var fileName = file.name;
+                    var fileExtension = fileName.split('.').pop().toLowerCase();
+
+                    if (!acceptedExtensions.includes(fileExtension)) {
+                        alert(`Invalid file type. Allowed: ${acceptedExtensions.join(', ')}`);
+                        $(`.file-${selector}`).val(''); 
+                        return false;
+                    }
+                    
                     var reader = new FileReader();
 
                     reader.onload = function(e) {
@@ -62,7 +73,7 @@
                         boxEvent1(1, result)    
                     }
 
-                    reader.readAsDataURL(selectedFile);
+                    reader.readAsDataURL(file);
                 }
             }
 
